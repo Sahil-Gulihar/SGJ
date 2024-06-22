@@ -1,0 +1,410 @@
+echo "Enter the name of the Folder"
+read name
+
+mkdir $name
+cd $name
+
+echo "Please choose an option:"
+echo "1) Vanilla"
+echo "2) Backend"
+echo "3) React"
+echo "4) Next"
+
+read choice
+
+if [[ $choice -eq 1 ]]; then
+  # Commands to be executed if choice is 1
+
+  # Create index.html
+  cat <<'EOF' >index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JS Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Hello, Vanilla JavaScript!</h1>
+    <button id="myButton">Click Me</button>
+    <script src="script.js"></script>
+</body>
+</html>
+EOF
+
+  # Create styles.css
+  cat <<'EOF' >styles.css
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+h1 {
+    color: #333;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+EOF
+
+  # Create script.js
+  cat <<'EOF' >script.js
+document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById("myButton");
+    button.addEventListener("click", function() {
+        alert("Button clicked!");
+    });
+});
+EOF
+
+  # Create README.md
+  cat <<'EOF' >README.md
+# Vanilla JS Project
+
+This is a simple vanilla JavaScript project.
+
+## Project Structure
+
+my-vanilla-js-project/
+│
+├── index.html
+├── styles.css
+├── script.js
+└── README.md
+
+## Instructions
+
+1. Open `index.html` in a web browser to see the project in action.
+2. Click the button to see an alert message.
+EOF
+
+elif
+  [[ $choice -eq 2 ]]
+then
+
+  # Commands to be executed if choice is 2
+  npm init -y
+  npm i express
+  mkdir routes
+  mkdir public
+
+  cat <<'EOF' >app.js
+    const express = require('express');
+    const app = express();
+    const port = 3000;
+
+    app.use(express.static('public'));
+
+    const indexRouter = require('./routes/index');
+    app.use('/', indexRouter);
+
+    app.listen(port, () => {
+        console.log(`Server is running at http://localhost:${port}`);
+    });
+EOF
+
+  cd routes
+  cat <<'EOF' >index.js
+    const express = require('express');
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.sendFile(__dirname + '/../public/index.html');
+});
+
+module.exports = router;
+EOF
+
+  cd ../
+  cd public
+  echo "I AM IN PUBLIC"
+  cat <<'EOF' >index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Project</title>
+</head>
+<body>
+    <h1>Welcome to the Backend Project</h1>
+</body>
+</html>
+
+EOF
+
+  cd ../
+
+  echo 'node_modules/' >>.gitignore
+
+  cat <<'EOF' >README.md
+
+markdown
+
+# Backend Project
+
+This is a simple Node.js and Express backend project.
+
+## Project Structure
+
+my-backend-project/
+│
+├── node_modules/
+├── public/
+│ └── index.html
+├── routes/
+│ └── index.js
+├── .gitignore
+├── app.js
+├── package.json
+└── README.md
+
+markdown
+
+
+## Instructions
+
+1. Install dependencies:
+
+```sh
+npm install
+
+    Start the server:
+
+sh
+
+npm start
+
+    Open http://localhost:3000 in a web browser to see the project in action.
+
+css
+
+
+###  Updating `package.json` (Optional)
+Add a start script to your `package.json` for convenience.
+
+```json
+"scripts": {
+    "start": "node app.js"
+}
+
+### Running the Project
+
+To run your project, use:
+
+sh
+
+npm start
+
+EOF
+
+  cd $name
+  echo 'node app.js to run the project'
+elif [[ $choice -eq 3 ]]; then
+  # Commands to executed if choice is 3
+  cd ../
+  npx create-react-app $name
+  cd $name
+
+  cd public
+  rm -rf *.png manifest.json *.txt
+  cd ../src/
+  rm -rf App.*
+  mkdir components
+  cd components
+  cat <<'EOF' >App.js
+
+
+    import React from 'react';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Welcome to My React Project</h1>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+EOF
+
+  cat <<'EOF' >App.css
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+EOF
+
+  cd ../
+  rm index.js
+
+  cat <<'EOF' >index.js
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './components/App';
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+EOF
+
+  rm -rf index.css
+
+  cat <<'EOF' >index.css
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+EOF
+
+  cd ../
+  rm README.md
+
+  cat <<'EOF' >README.md
+
+# React Project
+
+This is a simple React project.
+
+## Project Structure
+
+my-react-project/
+│
+├── node_modules/
+├── public/
+│ ├── index.html
+│ └── favicon.ico
+├── src/
+│ ├── components/
+│ │ └── App.js
+│ ├── index.css
+│ ├── index.js
+│ └── serviceWorker.js
+├── .gitignore
+├── package.json
+└── README.md
+
+markdown
+
+
+## Instructions
+
+1. Install dependencies:
+
+```sh
+npm install
+
+    Start the development server:
+
+sh
+
+npm start
+
+    Open http://localhost:3000 in a web browser to see the project in action.
+
+perl
+
+
+### 8. Running the Project
+To run your project, use:
+
+```sh
+npm start
+
+This will start the development server, and you can open http://localhost:3000 in a web browser to see the project in action.
+
+You now have a basic React project set up. You can expand it by adding more components, styles, and other functionality as needed.
+EOF
+
+elif [[ $choice -eq 4 ]]; then
+  cd ../
+  npx create-next-app@latest $name --js --import-alias '@/*' --tailwind --app --src-dir --eslint --no-typescript -y
+  cd $name
+  cd src
+  mkdir pages styles components
+  
+
+  npm run dev
+else
+  # Commands to be executed if choice is not 1, 2, 3, or 4
+  echo "Invalid choice. Please select a number between 1 and 4."
+fi
